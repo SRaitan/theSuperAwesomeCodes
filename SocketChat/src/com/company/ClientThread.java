@@ -25,7 +25,7 @@ public class ClientThread extends Thread {
             int actuallyRead; 
             String messageFromClient;
             System.out.println(getClientMsg(buffer));
-            outputStream.write("Send 1 for logIn, 2 for signUp, and Username + Password".getBytes());
+            outputStream.write("Send 1 for signUp, 2 for signIn, and Username + Password".getBytes());
             messageFromClient = getClientMsg(buffer);
             System.out.println();
             String opt = returnOpt(messageFromClient);
@@ -34,19 +34,19 @@ public class ClientThread extends Thread {
             newUser = new User(username, password);
             switch (opt){
                 case "1":
-                    if(signIn (newUser))
-                        outputStream.write(("Welcome back " + newUser.getUsername()).getBytes());
+                    if(signUp (newUser))
+                        outputStream.write(("Welcome " + newUser.getUsername()).getBytes());
+                    else outputStream.write("not true".getBytes());
                     //TODO: CHECK RETURN VALUES
                     break;
                 case "2":
-                    if(signUp (newUser))
-                    outputStream.write(("Welcome " + newUser.getUsername()).getBytes());
+                    if(signIn (newUser))
+                    outputStream.write(("Welcome back" + newUser.getUsername()).getBytes());
+                    else outputStream.write("not true".getBytes());
                     //TODO: CHECK RETURN VALUES 2
                     break;
                 default:
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -69,7 +69,6 @@ public class ClientThread extends Thread {
                     e.printStackTrace();
                 }
         }
-
     }
 
     private boolean signUp(User user) {

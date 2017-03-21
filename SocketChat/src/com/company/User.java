@@ -6,10 +6,12 @@ package com.company;
 public class User {
     String username;
     String password;
+    int unread;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        unread = 0;
     }
 
     public String getUsername() {return username;}

@@ -37,6 +37,7 @@ public class Main {
             toServer.append('&');
 
             outputStream.write(toServer.toString().getBytes());
+            Thread.sleep(000);
 
             actuallyRead = inputStream.read(buffer); //answer
             responseFromServer = new String(buffer, 0, actuallyRead);
@@ -52,7 +53,9 @@ public class Main {
             socket = null;
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
             if(inputStream != null)
                 try {
                     inputStream.close();

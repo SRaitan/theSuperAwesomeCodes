@@ -10,7 +10,6 @@ public class Main {
 static Map <String,String> usersMap = new HashMap<>();
     public static void main(String[] args) {
         try {
-
             ServerSocket serverSocket = new ServerSocket(3000);
             Socket socket = serverSocket.accept();
             System.out.println("newUser connected");
