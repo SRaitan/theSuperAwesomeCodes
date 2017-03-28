@@ -22,7 +22,7 @@ public class ClientThread extends Thread {
     OutputStream outputStream;
     private List<String> messages;
 
-    public ClientThread(Socket clientSocket, List<String> messages) {
+    ClientThread(Socket clientSocket, List<String> messages) {
         this.clientSocket = clientSocket;
         this.messages = messages;
     }
@@ -77,8 +77,6 @@ public class ClientThread extends Thread {
                 case SIGN_UP:
                     signUp();
                     break;
-
-
                 default:
             }
         } catch (IOException e) {
@@ -124,17 +122,17 @@ public class ClientThread extends Thread {
         return user;
     }
     private boolean validUser(User u) throws IOException {
-        if(u==null) return false;
+        if(u == null) return false;
         String existingPw = usersMap.get(u.getUsername());
         return existingPw!=null && existingPw.equals(u.getPassword());
     }
     private void logIn() throws IOException {
         User user = readUserFromStream();
-        outputStream.write(validUser(user)? OKAY:FAILURE);
+        outputStream.write(validUser(user)? OKAY : FAILURE);
     }
 
     private void getMessages() throws IOException {
-        User user=readUserFromStream();
+        User user = readUserFromStream();
         if(!validUser(user))
             return;
         byte [] msgFromBytes = new byte[4];
@@ -142,8 +140,8 @@ public class ClientThread extends Thread {
         if(actuallyRead != 4)
             return;
         //from which msg should the server send
-        int msgFrom = ByteBuffer.wrap(msgFromBytes).getInt();
-        for (int i = msgFrom; i < messages.size(); i++) {
+        int msgFromIndex = ByteBuffer.wrap(msgFromBytes).getInt();
+        for (int i = msgFromIndex; i < messages.size(); i++) {
             String message = messages.get(i);
             byte [] msgBytes = message.getBytes();
             outputStream.write(msgBytes.length);
@@ -151,7 +149,7 @@ public class ClientThread extends Thread {
         }
     }
     private void sendMessages() throws IOException {
-        User user=readUserFromStream();
+        User user = readUserFromStream();
         if(!validUser(user))
             return;
         int messageLength = inputStream.read();

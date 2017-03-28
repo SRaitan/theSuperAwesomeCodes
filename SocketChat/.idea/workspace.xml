@@ -16,7 +16,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -38,14 +38,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClientThread.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ClientThread.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/ClientThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="17" selection-end-column="41" />
+            <state relative-caret-position="867">
+              <caret line="78" column="26" lean-forward="false" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1088#1111#0" expanded="false" />
+                <element signature="e#1081#1104#0" expanded="false" />
                 <element signature="method#signIn#0;class#ClientThread#0" expanded="false" />
               </folding>
             </state>
@@ -545,12 +545,12 @@
       <workItem from="1490100889244" duration="15000" />
       <workItem from="1490101432726" duration="1462000" />
       <workItem from="1490159602111" duration="448000" />
-      <workItem from="1490680181157" duration="8562000" />
+      <workItem from="1490680181157" duration="9757000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20677000" />
+    <option name="totallyTimeSpent" value="21872000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -635,7 +635,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1088#1111#0" expanded="false" />
+            <element signature="e#1081#1104#0" expanded="false" />
             <element signature="method#signIn#0;class#ClientThread#0" expanded="false" />
           </folding>
         </state>
@@ -665,7 +665,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1088#1111#0" expanded="false" />
+            <element signature="e#1081#1104#0" expanded="false" />
             <element signature="method#signIn#0;class#ClientThread#0" expanded="false" />
           </folding>
         </state>
@@ -695,7 +695,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1088#1111#0" expanded="false" />
+            <element signature="e#1081#1104#0" expanded="false" />
             <element signature="method#signIn#0;class#ClientThread#0" expanded="false" />
           </folding>
         </state>
@@ -725,7 +725,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1088#1111#0" expanded="false" />
+            <element signature="e#1081#1104#0" expanded="false" />
             <element signature="method#signIn#0;class#ClientThread#0" expanded="false" />
           </folding>
         </state>
@@ -756,24 +756,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/ClientThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="78" column="26" lean-forward="false" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1081#1104#0" expanded="false" />
+            <element signature="method#signIn#0;class#ClientThread#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/company/ClientThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="17" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1088#1111#0" expanded="false" />
-            <element signature="method#signIn#0;class#ClientThread#0" expanded="false" />
           </folding>
         </state>
       </provider>

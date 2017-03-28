@@ -20,16 +20,27 @@ public class Main {
         GetMessagesThread getMessagesThread = new GetMessagesThread(user);
         getMessagesThread.start();
         while(!(input = inputUser()).equals("exit")){
-            Socket clientSocket = null;
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
+            Socket clientSocket;
+            InputStream inputStream;
+            OutputStream outputStream;
             try{
                 clientSocket = new Socket(SERVER_IP, PORT);
                 inputStream = clientSocket.getInputStream();
                 outputStream = clientSocket.getOutputStream();
                 outputStream.write(SEND_MESSAGE);
                 user.streamUser(outputStream);
+                //todo: send with username
                 byte[] inputBytes = input.getBytes();
+                byte[] totalMsg = new byte[inputBytes.length + user.getUsername().length() + 2];
+                int i = 0;
+                for (; i < inputBytes.length; i++)
+                    totalMsg[i] = inputBytes[i];
+                totalMsg[i++]=':';
+                totalMsg[i]=' ';
+                byte[] userNameBytes=user.getUsername().getBytes();
+                for (int j = 0; j < userNameBytes.length; i++) {
+                    totalMsg[inputBytes.length + j + 2] = userNameBytes[j];
+                }
                 outputStream.write(inputBytes.length);
                 outputStream.write(inputBytes);
                 int result = inputStream.read();
@@ -173,7 +184,7 @@ public class Main {
         return null;
     }
 
-    public static String inputUser() {
+    static String inputUser() {
         BufferedReader bufferedReader = new BufferedReader (new InputStreamReader(System.in));
         try {
             return bufferedReader.readLine();
@@ -182,6 +193,4 @@ public class Main {
         }
         return "";
     }
-
-
 }
