@@ -4,14 +4,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.util.List;
+
 import static com.company.Main.usersMap;
 
 public class ClientThread extends Thread {
+    public static final int SEND_MESSAGE = 100;
+    public static final int GET_MESSAGES = 101;
+    public static final int SIGN_UP = 102;
+    public static final int LOGIN = 103;
+    public static final int OKAY = 90;
+    public static final int FAILURE = 80;
 
-    Socket clientSocket;
-    User newUser;
+    private Socket clientSocket;
     InputStream inputStream;
     OutputStream outputStream;
+    private List<String> messages;
+
+    public ClientThread(Socket clientSocket, List<String> messages) {
+        this.clientSocket = clientSocket;
+        this.messages = messages;
+    }
 
     public ClientThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -21,7 +35,9 @@ public class ClientThread extends Thread {
         try {
             inputStream = clientSocket.getInputStream();
             outputStream = clientSocket.getOutputStream();
-            byte[] buffer = new byte[1024];
+
+            //region whatIdidBefore
+/*            byte[] buffer = new byte[1024];
             int actuallyRead; 
             String messageFromClient;
             System.out.println(getClientMsg(buffer));
@@ -32,19 +48,37 @@ public class ClientThread extends Thread {
             String username = returnUsername(messageFromClient);
             String password = returnPassword(messageFromClient);
             newUser = new User(username, password);
-            switch (opt){
-                case "1":
-                    if(signUp (newUser))
-                        outputStream.write(("Welcome " + newUser.getUsername()).getBytes());
-                    else outputStream.write("not true".getBytes());
-                    //TODO: CHECK RETURN VALUES
-                    break;
-                case "2":
-                    if(signIn (newUser))
+            case 1:
+                if(signUp (newUser))
+                    outputStream.write(("Welcome " + newUser.getUsername()).getBytes());
+                else outputStream.write("not true".getBytes());
+                //TODO: CHECK RETURN VALUES
+                break;
+            case 2:
+                if(signIn (newUser))
                     outputStream.write(("Welcome back" + newUser.getUsername()).getBytes());
-                    else outputStream.write("not true".getBytes());
-                    //TODO: CHECK RETURN VALUES 2
+                else outputStream.write("not true".getBytes());
+                //TODO: CHECK RETURN VALUES 2
+                break;*/
+
+            //endregion
+
+            int action = inputStream.read();
+            switch (action){
+                case SEND_MESSAGE:
+                    sendMessages();
                     break;
+                case GET_MESSAGES:
+                    getMessages();
+                    break;
+                case LOGIN:
+                    logIn();
+                    break;
+                case SIGN_UP:
+                    signUp();
+                    break;
+
+
                 default:
             }
         } catch (IOException e) {
@@ -70,14 +104,78 @@ public class ClientThread extends Thread {
                 }
         }
     }
+    private String readFromStream(int length) throws IOException {
+        if (length == -1)
+            return null;
+        byte[] bytesArray = new byte[length];
+        int actuallyRead = inputStream.read(bytesArray);
+        if (actuallyRead != length)
+            return null;
+        return new String(bytesArray);
+    }
+    private User readUserFromStream () throws IOException {
+        //USERNAME
+        User user = new User();
+        int userNameLength = inputStream.read();
+        user.setUsername(readFromStream(userNameLength));
+        //PASSWORD
+        int pwLength = inputStream.read();
+        user.setPassword(readFromStream(pwLength));
+        return user;
+    }
+    private boolean validUser(User u) throws IOException {
+        if(u==null) return false;
+        String existingPw = usersMap.get(u.getUsername());
+        return existingPw!=null && existingPw.equals(u.getPassword());
+    }
+    private void logIn() throws IOException {
+        User user = readUserFromStream();
+        outputStream.write(validUser(user)? OKAY:FAILURE);
+    }
 
-    private boolean signUp(User user) {
+    private void getMessages() throws IOException {
+        User user=readUserFromStream();
+        if(!validUser(user))
+            return;
+        byte [] msgFromBytes = new byte[4];
+        int actuallyRead = inputStream.read(msgFromBytes);
+        if(actuallyRead != 4)
+            return;
+        //from which msg should the server send
+        int msgFrom = ByteBuffer.wrap(msgFromBytes).getInt();
+        for (int i = msgFrom; i < messages.size(); i++) {
+            String message = messages.get(i);
+            byte [] msgBytes = message.getBytes();
+            outputStream.write(msgBytes.length);
+            outputStream.write(msgBytes);
+        }
+    }
+    private void sendMessages() throws IOException {
+        User user=readUserFromStream();
+        if(!validUser(user))
+            return;
+        int messageLength = inputStream.read();
+        if(messageLength == -1)
+            return;
+        byte[] msgBytes = new byte [messageLength];
+        int actuallyRead = inputStream.read(msgBytes);
+        if(actuallyRead != messageLength)
+            return;
+        String msg = new String(msgBytes);
+        messages.add(msg);
+        outputStream.write(OKAY);
+    }
+
+    private void signUp() throws IOException {
+        User user = readUserFromStream();
+        boolean success = false;
+        if(user == null) return;
         synchronized (usersMap) {
             if (!usersMap.containsKey(user.getUsername())) {
                 usersMap.put(user.getUsername(), user.getPassword());
-                return true;
+                success = true;
             }
-            return false;
+            outputStream.write(success? OKAY:FAILURE);
         }
     }
 

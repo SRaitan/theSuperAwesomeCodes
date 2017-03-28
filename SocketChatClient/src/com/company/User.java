@@ -1,21 +1,44 @@
 package com.company;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * Created by hackeru on 3/21/2017.
  */
 public class User {
     String username;
     String password;
-    int unread;
+    int choice;
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public int getChoice() {
+        return choice;
+    }
+
+    public void setChoice(int choice) {
+        this.choice = choice;
+    }
+
+    public User(String username, String password, int choice ){
         this.username = username;
         this.password = password;
-        unread = 0;
+        this.choice=choice;
 
+
+    }
+
+    public void streamUser (OutputStream outputStream) throws IOException {
+        //write username and password to byteStream to send to server
+        byte[] userNameBytes = this.username.getBytes();
+        byte [] passwordBytes = this.password.getBytes();
+        outputStream.write(userNameBytes.length);
+        outputStream.write(userNameBytes);
+        outputStream.write(passwordBytes.length);
+        outputStream.write(passwordBytes);
+        //todo: check how getBytes works
     }
 
     public String getUsername() {return username;}
