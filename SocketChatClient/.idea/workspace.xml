@@ -137,7 +137,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/SR/SarahRaitan5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FileTransferClient" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
@@ -546,12 +546,12 @@
       <workItem from="1490101442221" duration="1450000" />
       <workItem from="1490680161807" duration="14679000" />
       <workItem from="1490766382883" duration="7323000" />
-      <workItem from="1490852190590" duration="23000" />
+      <workItem from="1490852190590" duration="132000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27946000" />
+    <option name="totallyTimeSpent" value="28055000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
