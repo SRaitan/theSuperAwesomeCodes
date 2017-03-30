@@ -22,7 +22,6 @@
             <state relative-caret-position="192">
               <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#2176#2199#0" expanded="false" />
               </folding>
             </state>
@@ -546,12 +545,12 @@
       <workItem from="1490101442221" duration="1450000" />
       <workItem from="1490680161807" duration="14679000" />
       <workItem from="1490766382883" duration="7323000" />
-      <workItem from="1490852190590" duration="3199000" />
+      <workItem from="1490852190590" duration="3271000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31122000" />
+    <option name="totallyTimeSpent" value="31194000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1056" extended-state="1" />
@@ -610,7 +609,6 @@
         <state relative-caret-position="192">
           <caret line="10" column="19" lean-forward="true" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2176#2199#0" expanded="false" />
           </folding>
         </state>
@@ -631,7 +629,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2176#2199#0" expanded="false" />
           </folding>
         </state>
@@ -652,7 +649,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2176#2199#0" expanded="false" />
           </folding>
         </state>
@@ -663,7 +659,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2176#2199#0" expanded="false" />
           </folding>
         </state>
@@ -674,7 +669,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2176#2199#0" expanded="false" />
           </folding>
         </state>
@@ -707,7 +701,6 @@
         <state relative-caret-position="192">
           <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2176#2199#0" expanded="false" />
           </folding>
         </state>

@@ -8,7 +8,6 @@ public class Main {
     private static final long KB = 1024;
     private static final long MB = KB * KB;
     private static final long GB = MB * KB;
-    private static final long T = GB * KB;
     public static final String SERVER_IP = "127.0.0.1";
     public static final int PORT = 3001;
 
@@ -156,7 +155,7 @@ public class Main {
             fileInputStream = new FileInputStream(fileToUpload);
             int oneByte;
             long totalLength = fileToUpload.length();
-            int countProgress=0;
+            int countProgress = 0;
             while((oneByte = fileInputStream.read()) != -1){
                 outputStream.write(oneByte);
                 countProgress++;
@@ -225,14 +224,17 @@ public class Main {
             String fileName = new String(fileNameBytes);
             File downloadedFile = new File(downloadPath, fileName);
             downloadResult.setFileName(fileName);
+            byte [] buffer = new byte[8];
+            inputStream.read(buffer);
+            long fileSize = ByteBuffer.wrap(buffer).getLong();
             fileOutputStream = new FileOutputStream(downloadedFile);
-            int oneByte, countProgress=0;
+            int oneByte, countProgress = 0;
             while((oneByte = inputStream.read()) != -1) {
                 countProgress++;
-                //איך נדע מה הגודל של הקובץ?
+                //TODO: here now
                 fileOutputStream.write(oneByte);
                 if (countProgress % 5000 == 0) {
-                    System.out.println("Uploaded: " + (countProgress * 100) / totalLength + "%");
+                    System.out.println("Downloaded: " + (countProgress * 100) / fileSize + "%");
                 }
             }
             fileOutputStream.close();
@@ -248,7 +250,6 @@ public class Main {
         return downloadResult;
     }
 
-
     static void close(Closeable... closeables){
         for(Closeable closeable : closeables){
             if(closeable != null)
@@ -258,10 +259,7 @@ public class Main {
                     e.printStackTrace();
                 }
         }
-
     }
-
-
 }
 
 class DownloadResult {

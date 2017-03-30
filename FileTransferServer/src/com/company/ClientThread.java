@@ -8,7 +8,9 @@ import java.nio.ByteBuffer;
  * Created by eladlavi on 29/03/2017.
  */
 public class ClientThread extends Thread {
-
+    private static final long KB = 1024;
+    private static final long MB = KB * KB;
+    private static final long GB = MB * KB;
     private UploadedFile uploadedFile;
     private Socket clientSocket;
     private InputStream inputStream;
@@ -117,6 +119,10 @@ public class ClientThread extends Thread {
     }
 
     private void download() throws IOException {
+        if(uploadedFile.length() > MB){
+            outputStream.write(FAILURE);
+            return;
+        }
         if(uploadedFile.isLocked()) {
             outputStream.write(FAILURE);
             return;
@@ -134,6 +140,11 @@ public class ClientThread extends Thread {
         shouldDecrement = true;
         outputStream.write(uploadedFile.getFileNameBytes().length);
         outputStream.write(uploadedFile.getFileNameBytes());
+        //sending file size to client
+        long fileLength = uploadedFile.length();
+        byte [] fileSizeBuffer = new byte[8];
+        ByteBuffer.wrap(fileSizeBuffer).putLong(fileLength);
+        outputStream.write(fileSizeBuffer);
         fileInputStream = new FileInputStream(uploadedFile);
         // TODO: reading / downloading lock
         int oneByte;
