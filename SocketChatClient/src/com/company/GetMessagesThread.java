@@ -17,7 +17,7 @@ public class GetMessagesThread extends Thread {
     public static final int LOGIN = 103;
     public static final int OKAY = 90;
     public static final int FAILURE = 80;
-    public static final String SERVER_IP = "10.0.11.4";
+    public static final String SERVER_IP = "127.0.0.1";
 
     public boolean go = true;
     private int lastMsgRecieved;

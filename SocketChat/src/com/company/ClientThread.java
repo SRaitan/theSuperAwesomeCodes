@@ -142,6 +142,9 @@ public class ClientThread extends Thread {
         int messageFrom = ByteBuffer.wrap(messageFromBytes).getInt();
         for (int i = messageFrom; i < messages.size(); i++) {
             String message = messages.get(i).getContent();
+            //todo: change
+            byte[] totalMessage = new byte[message.length() + messages.get(i).getSender().length()];
+
             byte[] messageBytes = message.getBytes();
             outputStream.write(messageBytes.length);
             outputStream.write(messageBytes);

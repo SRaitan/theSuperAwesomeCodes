@@ -2,24 +2,38 @@ package com.company;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
+/**
+ * Created by eladlavi on 29/03/2017.
+ */
 public class ClientThread extends Thread {
-UploadedFile uploadedFile;
-Socket clientSocket;
-private OutputStream fileOutputstream;
-private InputStream inputStream;
-private OutputStream outputStream;
-public static final int UPLOAD = 100;
-public static final int DOWNLOAD = 101;
-public static final int OK = 90;
-public static final int FAILURE = 80;
-private InputStream fileInputstream;
+
+    private UploadedFile uploadedFile;
+    private Socket clientSocket;
+    private InputStream inputStream;
+    private OutputStream outputStream;
+    private OutputStream fileOutputStream;
+    private InputStream fileInputStream;
+    public static final int UPLOAD = 100;
+    public static final int DOWNLOAD = 101;
+    public static final int OKAY = 90;
+    public static final int FAILURE = 91;
+
+    boolean shouldDecrement = false;
+
+    public ClientThread(UploadedFile uploadedFile, Socket clientSocket) {
+        this.uploadedFile = uploadedFile;
+        this.clientSocket = clientSocket;
+    }
+
     @Override
     public void run() {
+
         try {
             inputStream = clientSocket.getInputStream();
             outputStream = clientSocket.getOutputStream();
-            int action=inputStream.read();
+            int action = inputStream.read();
             switch (action){
                 case UPLOAD:
                     upload();
@@ -27,73 +41,106 @@ private InputStream fileInputstream;
                 case DOWNLOAD:
                     download();
                     break;
-                
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally{
+        }finally {
+            if(inputStream != null)
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             if(outputStream != null)
                 try {
                     outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }if(inputStream!= null)
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }if (clientSocket != null)
+                }
+            if(clientSocket != null)
                 try {
                     clientSocket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            if(fileOutputstream != null)
+            if(fileOutputStream != null)
                 try {
-                    fileOutputstream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }if(fileInputstream!= null)
-                try {
-                    inputStream.close();
+                    fileOutputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            if(fileInputStream != null)
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if(uploadedFile != null && uploadedFile.isLocked())
+                uploadedFile.unlock();
+            if(shouldDecrement)
+                uploadedFile.concurrentDownloaded.decrementAndGet();
         }
     }
 
-    private void download() throws IOException {
-        outputStream.write( uploadedFile.isLock() ? FAILURE : OK );
-        fileInputstream = new FileInputStream(uploadedFile);
-        //todo: reading/downloading lock
-        int oneByte;
-        while (())
-    }
-
     private void upload() throws IOException {
-        boolean lock = false;
+        boolean lock = true;
         synchronized (uploadedFile){
-            if(!uploadedFile.isLock()) {
+            if(!uploadedFile.isLocked() && uploadedFile.concurrentDownloaded.get()==0){
                 uploadedFile.lock();
                 lock = false;
             }
         }
-        outputStream.write( lock? FAILURE : OK );
-        int fileNameLength = inputStream.read();
-        if(fileNameLength == -1)
+        outputStream.write(lock ? FAILURE : OKAY);
+        if(lock)
             return;
-        byte[] filenameBytes = new byte[fileNameLength];
-        int actuallyRead = inputStream.read(filenameBytes);
+        int fileNameLength = inputStream.read();
+        if(fileNameLength == -1) {
+            uploadedFile.unlock();
+            return;
+        }
+        byte[] fileNameBytes = new byte[fileNameLength];
+        int actuallyRead = inputStream.read(fileNameBytes);
         if(actuallyRead != fileNameLength){
             uploadedFile.unlock();
             return;
         }
-        fileOutputstream = new FileOutputStream(uploadedFile);
+        fileOutputStream = new FileOutputStream(uploadedFile);
         int oneByte;
-        while((oneByte = inputStream.read())!= -1)
-            fileOutputstream.write(oneByte);
-        fileOutputstream.close();
-        fileOutputstream = null;
+        while((oneByte = inputStream.read()) != -1) {
+            fileOutputStream.write(oneByte);
+        }
+        fileOutputStream.close();
+        fileOutputStream = null;
+        uploadedFile.setFileNameBytes(fileNameBytes);
+        uploadedFile.increaseVersion();
+        uploadedFile.unlock();
+    }
+
+    private void download() throws IOException {
+        if(uploadedFile.isLocked()) {
+            outputStream.write(FAILURE);
+            return;
+        }else{
+            outputStream.write(OKAY);
+        }
+        byte[] versionBytes = new byte[4];
+        ByteBuffer.wrap(versionBytes).putInt(uploadedFile.getVersion());
+        outputStream.write(versionBytes);
+        int shouldSendFile = inputStream.read();
+        if(shouldSendFile != OKAY) {
+            return;
+        }
+        uploadedFile.concurrentDownloaded.incrementAndGet();
+        shouldDecrement = true;
+        outputStream.write(uploadedFile.getFileNameBytes().length);
+        outputStream.write(uploadedFile.getFileNameBytes());
+        fileInputStream = new FileInputStream(uploadedFile);
+        // TODO: reading / downloading lock
+        int oneByte;
+        while((oneByte = fileInputStream.read()) != -1) {
+            outputStream.write(oneByte);
+        }
+        fileInputStream.close();
+        fileInputStream = null;
     }
 }

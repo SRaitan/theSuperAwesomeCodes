@@ -16,7 +16,7 @@ static Map <String,String> usersMap = new HashMap<>();
             ServerSocket serverSocket = new ServerSocket(port);
 
             List<Message> messages = new ArrayList<>();
-            messages.add(new Message("Welcome to this awesome chat", " מצופה יש רק בשקם"));
+            messages.add(new Message("Welcome to this awesome chat:", " מצופה יש רק בשקם"));
             while (true){
                 System.out.println("Waiting for incoming communication");
                 Socket clientSocket = serverSocket.accept();

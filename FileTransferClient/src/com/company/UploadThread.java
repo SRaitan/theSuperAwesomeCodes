@@ -42,19 +42,17 @@ public class UploadThread extends Thread {
                     outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }if(inputStream!= null)
+                }if(inputStream != null)
                 try {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }if (serverSocket!=null)
+                }if (serverSocket != null)
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
         }
-
     }
-
 }
