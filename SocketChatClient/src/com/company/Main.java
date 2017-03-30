@@ -5,8 +5,8 @@ import static com.company.GetMessagesThread.*;
 public class Main {
     //Socket Client
     public static void main(String[] args) {
-        User user = null;
-        String input = null;
+        User user;
+        String input;
         while (true){
             if ((user = menu()) == null)
                 return;
@@ -16,7 +16,6 @@ public class Main {
                 System.out.println(user.getChoice() == SIGN_UP? "Your username is apparently taken, buddy" : "Incorrect username or password, my friend");
         }
 
-        System.out.println("Welcome to this awesome chat: מצופה יש רק בשקם");
         GetMessagesThread getMessagesThread = new GetMessagesThread(user);
         getMessagesThread.start();
         while(!(input = inputUser()).equals("exit")){
@@ -31,16 +30,16 @@ public class Main {
                 user.streamUser(outputStream);
                 //todo: send with username
                 byte[] inputBytes = input.getBytes();
-                byte[] totalMsg = new byte[inputBytes.length + user.getUsername().length() + 2];
+                /*byte[] totalMsg = new byte[inputBytes.length + user.getUsername().length() + 2];
                 int i = 0;
-                for (; i < inputBytes.length; i++)
-                    totalMsg[i] = inputBytes[i];
-                totalMsg[i++]=':';
-                totalMsg[i]=' ';
-                byte[] userNameBytes=user.getUsername().getBytes();
-                for (int j = 0; j < userNameBytes.length; i++) {
-                    totalMsg[inputBytes.length + j + 2] = userNameBytes[j];
+                byte[] userNameBytes = user.getUsername().getBytes();
+                for (; i < userNameBytes.length; i++) {
+                    totalMsg[i] = userNameBytes[i];
                 }
+                totalMsg[i++] = ':';
+                totalMsg[i] = ' ';
+                for (int j = 0; j < inputBytes.length; j++)
+                    totalMsg[userNameBytes.length + 2 + j] = inputBytes[j];*/
                 outputStream.write(inputBytes.length);
                 outputStream.write(inputBytes);
                 int result = inputStream.read();
@@ -128,7 +127,7 @@ public class Main {
             clientSocket = new Socket(SERVER_IP, PORT);
             inputStream = clientSocket.getInputStream();
             outputStream = clientSocket.getOutputStream();
-            outputStream.write(user.getChoice() == 1 ? SIGN_UP : LOGIN);
+            outputStream.write(user.getChoice());
             byte[] userNameBytes = user.getUsername().getBytes();
             byte[] pwBytes = user.getPassword().getBytes();
             outputStream.write(userNameBytes.length);
@@ -151,10 +150,10 @@ public class Main {
         System.out.println("Please choose: 1-SignUp, 2-Login");
         System.out.println("At any point, type exit to exit this chat");
         String input;
-        input = inputUser();
+        //input = inputUser();
         int action = 0;
         while (action == 0) {
-            switch (input) {
+            switch (input = inputUser()) {
                 case "1":
                     action = SIGN_UP;
                     break;
@@ -164,7 +163,7 @@ public class Main {
                 case "exit":
                     exit();
                 default:
-                    System.out.println("Yeah....that wasn't exactly 1, 2, or exit...^_^");
+                    System.out.println("Yeah...that wasn't exactly 1, 2, or exit...^_^");
             }
         }
         System.out.println("Please enter username");

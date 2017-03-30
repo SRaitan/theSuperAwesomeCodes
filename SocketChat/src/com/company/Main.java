@@ -9,13 +9,14 @@ import java.util.Map;
 
 public class Main {
 static Map <String,String> usersMap = new HashMap<>();
-    public static final int port=3000;
+    public static final int port = 3000;
     public static void main(String[] args) {
 
         try {
             ServerSocket serverSocket = new ServerSocket(port);
 
-            List<String> messages = new ArrayList<>();
+            List<Message> messages = new ArrayList<>();
+            messages.add(new Message("Welcome to this awesome chat", " מצופה יש רק בשקם"));
             while (true){
                 System.out.println("Waiting for incoming communication");
                 Socket clientSocket = serverSocket.accept();

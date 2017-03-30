@@ -20,9 +20,9 @@ public class ClientThread extends Thread {
     private Socket clientSocket;
     InputStream inputStream;
     OutputStream outputStream;
-    private List<String> messages;
+    private List<Message> messages;
 
-    ClientThread(Socket clientSocket, List<String> messages) {
+    ClientThread(Socket clientSocket, List<Message> messages) {
         this.clientSocket = clientSocket;
         this.messages = messages;
     }
@@ -30,6 +30,7 @@ public class ClientThread extends Thread {
     public ClientThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
+
     @Override
     public void run() {
         try {
@@ -124,28 +125,29 @@ public class ClientThread extends Thread {
     private boolean validUser(User u) throws IOException {
         if(u == null) return false;
         String existingPw = usersMap.get(u.getUsername());
-        return existingPw!=null && existingPw.equals(u.getPassword());
+        return existingPw != null && existingPw.equals(u.getPassword());
     }
     private void logIn() throws IOException {
         User user = readUserFromStream();
         outputStream.write(validUser(user)? OKAY : FAILURE);
     }
-
     private void getMessages() throws IOException {
         User user = readUserFromStream();
         if(!validUser(user))
             return;
-        byte [] msgFromBytes = new byte[4];
-        int actuallyRead = inputStream.read(msgFromBytes);
+        byte[] messageFromBytes = new byte[4];
+        int actuallyRead = inputStream.read(messageFromBytes);
         if(actuallyRead != 4)
             return;
-        //from which msg should the server send
-        int msgFromIndex = ByteBuffer.wrap(msgFromBytes).getInt();
-        for (int i = msgFromIndex; i < messages.size(); i++) {
-            String message = messages.get(i);
-            byte [] msgBytes = message.getBytes();
-            outputStream.write(msgBytes.length);
-            outputStream.write(msgBytes);
+        int messageFrom = ByteBuffer.wrap(messageFromBytes).getInt();
+        for (int i = messageFrom; i < messages.size(); i++) {
+            String message = messages.get(i).getContent();
+            byte[] messageBytes = message.getBytes();
+            outputStream.write(messageBytes.length);
+            outputStream.write(messageBytes);
+            byte[] messageSenderBytes = messages.get(i).getSender().getBytes();
+            outputStream.write(messageSenderBytes.length);
+            outputStream.write(messageSenderBytes);
         }
     }
     private void sendMessages() throws IOException {
@@ -159,7 +161,10 @@ public class ClientThread extends Thread {
         int actuallyRead = inputStream.read(msgBytes);
         if(actuallyRead != messageLength)
             return;
-        String msg = new String(msgBytes);
+        String byteMsg = new String(msgBytes);
+        //when you add 2 bytes array this takes the address
+
+        Message msg = new Message(new String(msgBytes), user.getUsername());
         messages.add(msg);
         outputStream.write(OKAY);
     }
@@ -173,7 +178,7 @@ public class ClientThread extends Thread {
                 usersMap.put(user.getUsername(), user.getPassword());
                 success = true;
             }
-            outputStream.write(success? OKAY:FAILURE);
+            outputStream.write(success? OKAY : FAILURE);
         }
     }
 

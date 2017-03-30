@@ -24,12 +24,12 @@ public class GetMessagesThread extends Thread {
     private User user;
 
     public GetMessagesThread(User user) {
-        this.user=user;
+        this.user = user;
         this.lastMsgRecieved = -1;
     }
 
     public void stopGettingMessages(){
-        go=false;
+        go = false;
         this.interrupt();
     }
 
