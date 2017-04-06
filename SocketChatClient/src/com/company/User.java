@@ -3,48 +3,31 @@ package com.company;
 import java.io.IOException;
 import java.io.OutputStream;
 
+
 /**
- * Created by hackeru on 3/21/2017.
+ * Created by eladlavi on 28/03/2017.
  */
 public class User {
-    String username;
-    String password;
-    int choice;
+    private String userName;
+    private String password;
+    private int action;
 
-    public User() {
-    }
-
-    public int getChoice() {
-        return choice;
-    }
-
-    public void setChoice(int choice) {
-        this.choice = choice;
-    }
-
-    public User(String username, String password, int choice ){
-        this.username = username;
+    public User(String userName, String password, int action) {
+        this.userName = userName;
         this.password = password;
-        this.choice=choice;
+        this.action = action;
+    }
 
+    public User(){
 
     }
 
-    public void streamUser (OutputStream outputStream) throws IOException {
-        //write username and password to byteStream to send to server
-        byte[] userNameBytes = this.username.getBytes();
-        byte [] passwordBytes = this.password.getBytes();
-        outputStream.write(userNameBytes.length);
-        outputStream.write(userNameBytes);
-        outputStream.write(passwordBytes.length);
-        outputStream.write(passwordBytes);
-        //todo: check how getBytes works
+    public String getUserName() {
+        return userName;
     }
 
-    public String getUsername() {return username;}
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -55,14 +38,18 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == null) return false;
-        if(obj == this) return true;
-        if(obj instanceof User) {
-            User other = (User) obj;
-            return this.getUsername().equals(other.getUsername()) && this.getPassword().equals(other.getPassword());
-        }
-        return false;
+    public int getAction() {
+        return action;
+    }
+
+    public void setAction(int action) {
+        this.action = action;
+    }
+
+    public void stream(OutputStream outputStream) throws IOException{
+        outputStream.write(userName.getBytes().length);
+        outputStream.write(userName.getBytes());
+        outputStream.write(password.getBytes().length);
+        outputStream.write(password.getBytes());
     }
 }
