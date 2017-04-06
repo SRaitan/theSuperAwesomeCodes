@@ -1,4 +1,7 @@
 package com.company;
+import IOPackage.IO;
+import IOPackage.UserIO;
+
 import java.io.File;
 import java.util.Set;
 
@@ -66,10 +69,10 @@ public class Main {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        if(listener.realKey!=Integer.MIN_VALUE) {
+                        if(listener.realKey != Integer.MIN_VALUE) {
                             String decrypted =
                                     new String(new CodeBreaker().tryDecode(FileManipulator.fileToCharArray(orgFile), listener.realKey));
-                            myIO.output("Cipher Key "+listener.realKey);
+                            myIO.output("Cipher Key " + listener.realKey);
                             myIO.output("Decrypted file:");
                             myIO.output(decrypted);
                         }

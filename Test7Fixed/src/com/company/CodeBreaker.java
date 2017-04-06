@@ -31,23 +31,23 @@ public class CodeBreaker extends Thread {
             e.printStackTrace();
         }
     }
+
     private int decode(File encryptedFile) throws IOException {
         int key = begin;
         char[] fileChars = FileManipulator.fileToCharArray(encryptedFile);
+        //todo: encode the keywords not the file
         while(!isGoodCode(tryDecode(fileChars, key))){
             if(key == until)
                 return Integer.MAX_VALUE;
             key++;
         }
-       return key;
+        return key;
     }
-    //should be in separate class that dea
 
     public CodeBreaker() {}
 
     public char[] tryDecode(char[] fileChars, int key) {
         for (int i = 0; i < fileChars.length; i++)
-
             fileChars[i] += key;
         return fileChars;
     }
@@ -58,7 +58,7 @@ public class CodeBreaker extends Thread {
         for (String word : words) {
             if(word.endsWith(".") || word.endsWith(","))
                 word = word.substring(0,word.length() - 1);
-            if(dictionary.commonWords.contains(word))
+            if(dictionary.getCommonWords().contains(word))
                 success--;
         }
         return success == 0;

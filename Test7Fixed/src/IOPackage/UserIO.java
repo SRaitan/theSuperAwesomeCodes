@@ -1,4 +1,4 @@
-package com.company;
+package IOPackage;
 
 import java.io.*;
 

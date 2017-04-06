@@ -9,14 +9,19 @@ import java.util.Set;
  */
 
 public class MyDictionary {
-    Set<String> commonWords;
+    private Set<String> commonWords;
     private Set<String> words;
+
+    public Set<String> getCommonWords() {
+        return commonWords;
+    }
 
     MyDictionary() {
         commonWords = new HashSet<>();
         initCommonWords();
         words = new HashSet<>();
     }
+
     private void initCommonWords() {
         commonWords.add("be");
         commonWords.add("to");
@@ -35,7 +40,7 @@ public class MyDictionary {
     }
 
     boolean addWordToDictionary(String word) {
-       return !commonWords.contains(word) && words.add(word);
+        return !commonWords.contains(word) && words.add(word);
     }
 
     boolean addAllWordsToDictionary(String[] words){

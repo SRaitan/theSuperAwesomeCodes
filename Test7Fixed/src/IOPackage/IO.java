@@ -1,4 +1,4 @@
-package com.company;
+package IOPackage;
 
 /**
  * Created by hackeru on 4/6/2017.
