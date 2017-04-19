@@ -4,11 +4,12 @@ package com.company;
  * Created by hackeru on 4/6/2017.
  */
 public class DecodeListener implements CodeBreaker.CodeBreakerListener {
-    int realKey = Integer.MIN_VALUE;
+    String decodedText = null;
+    int cipherKey;
 
     @Override
-    public void crackedCode(int key) {
-        if (key != Integer.MAX_VALUE)
-            realKey = key;
+    public void crackedCode(byte [] crackedCode, int key) {
+        decodedText = new String(crackedCode);
+        cipherKey=key;
     }
 }

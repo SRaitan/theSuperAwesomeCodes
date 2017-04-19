@@ -1,8 +1,6 @@
 package com.company;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by hackeru on 4/6/2017.
@@ -12,30 +10,42 @@ public class MyDictionary {
     private Set<String> commonWords;
     private Set<String> words;
 
-    public Set<String> getCommonWords() {
+    Set<String> getCommonWords() {
         return commonWords;
     }
 
+    /**
+     * Returns common words as list of byte arrays so as to facilitate use with files
+     * @return a list of byte arrays representing every common word in bytes
+     */
+    List<byte[]> getCommonWordsAsByteArrayList(){
+        List<byte[]> result = new ArrayList<>();
+        for (String word : commonWords) {
+            result.add(word.getBytes());
+        }
+        return result;
+    }
+
     MyDictionary() {
-        commonWords = new HashSet<>();
         initCommonWords();
-        words = new HashSet<>();
+        words = new TreeSet<>();
     }
 
     private void initCommonWords() {
+        commonWords = new TreeSet<>();
         commonWords.add("be");
         commonWords.add("to");
         commonWords.add("of");
         commonWords.add("and");
         commonWords.add("a");
         commonWords.add("in");
+        commonWords.add("the");
     }
 
-    Set<String> getWords() {
-        //todo: change to return array & add totalDico field & isUpdated flag
+    Set<String> getAllWords() {
+        //todo:add totalDico field & isUpdated flag
         Set<String> totalDico = words;
         totalDico.addAll(commonWords);
-        //todo:sort
         return totalDico;
     }
 
@@ -46,5 +56,6 @@ public class MyDictionary {
     boolean addAllWordsToDictionary(String[] words){
         return Collections.addAll(commonWords, words);
     }
+
 
 }
