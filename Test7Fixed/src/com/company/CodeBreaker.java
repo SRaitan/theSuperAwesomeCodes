@@ -1,24 +1,17 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.List;
 
 public class CodeBreaker extends Thread {
     private MyDictionary dictionary;
-    private byte[] encryptedFileBytes;
+    private byte[] encryptedBytes;
     private int begin, until;
     private CodeBreakerListener myListener;
 
-    CodeBreaker(File encryptedFile, int begin, int until, CodeBreakerListener myListener) {
-        dictionary = new MyDictionary();
-        try {
-            this.encryptedFileBytes = fileToByteArray(encryptedFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    CodeBreaker(byte[] encryptedBytes, int begin, int until, CodeBreakerListener myListener) {
+        this.dictionary = new MyDictionary();
+        this.encryptedBytes = encryptedBytes;
         this.begin = begin;
         this.until = until;
         this.myListener = myListener;
@@ -31,7 +24,7 @@ public class CodeBreaker extends Thread {
             if (myListener != null) {
                 if(cipherKey != Integer.MAX_VALUE){
                     //if key was actually found
-                    myListener.crackedCode(decryptBytes(encryptedFileBytes,cipherKey), cipherKey);
+                    myListener.crackedCode(decryptBytes(encryptedBytes,cipherKey), cipherKey);
                 }
             }
         } catch (IOException e) {
@@ -41,7 +34,7 @@ public class CodeBreaker extends Thread {
 
     int findKey() throws IOException {
         int key = begin;
-        while(!isFileDecoded(encryptedFileBytes,encryptCommonWords(key), key)){
+        while(!isFileDecoded(encryptedBytes,encryptCommonWords(key), key)){
             key++;
             if(key == until)
                 return Integer.MAX_VALUE; //key was not found
@@ -90,22 +83,6 @@ public class CodeBreaker extends Thread {
         byte encryptedComma =(byte)(',' + key);
         return charToCheck == encryptedBlank
                 || charToCheck == encryptedFullStop || charToCheck == encryptedComma;
-    }
-
-    /**
-     * This func used to be in separate class for SOLID but was moved to here since it was the only func there
-     * @param file original file to be converted to byte array
-     * @return byte array representing file
-     * @throws IOException if file is invalid
-     */
-    private byte[] fileToByteArray(File file) throws IOException {
-        byte[] fileBytes = new byte[(int) file.length()];
-        InputStream fileInputStream = new FileInputStream(file);
-        int actuallyRead;
-        int counter = 0;
-        while ((actuallyRead = fileInputStream.read()) != -1)
-            fileBytes[counter++] = (byte) actuallyRead;
-        return fileBytes;
     }
 
     interface CodeBreakerListener {

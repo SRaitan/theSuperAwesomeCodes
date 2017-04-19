@@ -3,6 +3,9 @@ package com.company;
 import IOPackage.IO;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
 /**
@@ -62,10 +65,12 @@ public class Menu {
         }
     }
 
-    private void startDecoding(File orgFile, DecodeListener listener) {
+    private void startDecoding(File orgFile, DecodeListener listener) throws IOException {
+        byte[] fileBytes=fileToByteArray(orgFile);
         CodeBreaker FirstHalfOfCharBreaker =
-                new CodeBreaker(orgFile, 0, Byte.MAX_VALUE/ 2, listener);
-        CodeBreaker SecondHalfOfCharBreaker = new CodeBreaker(orgFile, (Byte.MAX_VALUE/ 2) + 1, Byte.MAX_VALUE, listener);
+                new CodeBreaker(fileBytes, 0, Byte.MAX_VALUE / 2, listener);
+        CodeBreaker SecondHalfOfCharBreaker =
+                new CodeBreaker(fileBytes, (Byte.MAX_VALUE/ 2) + 1, Byte.MAX_VALUE, listener);
         FirstHalfOfCharBreaker.start();
         SecondHalfOfCharBreaker.start();
         try {
@@ -83,6 +88,22 @@ public class Menu {
             myIO.output(listener.decodedText);
         }
         else myIO.output("Could not crack code, they're too good for me!");
+    }
+
+    /**
+     * This func used to be in separate class for SOLID but was moved to here since it was the only func there
+     * @param file original file to be converted to byte array
+     * @return byte array representing file
+     * @throws IOException if file is invalid
+     */
+    private byte[] fileToByteArray(File file) throws IOException {
+        byte[] fileBytes = new byte[(int) file.length()];
+        InputStream fileInputStream = new FileInputStream(file);
+        int actuallyRead;
+        int counter = 0;
+        while ((actuallyRead = fileInputStream.read()) != -1)
+            fileBytes[counter++] = (byte) actuallyRead;
+        return fileBytes;
     }
 
     private void addWord() {
