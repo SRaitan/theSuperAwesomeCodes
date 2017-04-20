@@ -1,7 +1,10 @@
 package com.company;
 
 import IOPackage.IO;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 
@@ -52,12 +55,13 @@ class MenuTest {
 
     @Test
     void for3Choice() {
-        String orgMessage = "to be one of the great";
+        String orgMessage="to be one of the great";
         byte[] encrypted = orgMessage.getBytes();
         int realKey = 23;
         goodDecryption = false;
         for (int i = 0; i < encrypted.length; i++)
             encrypted[i] += realKey;
+
         CodeBreaker tester = new CodeBreaker(encrypted, Byte.MIN_VALUE, Byte.MAX_VALUE,
                 (message, key) -> goodDecryption = true);//(key == realKey && new String(message).equals(new String(msgBytes))));
         tester.start();
@@ -66,6 +70,7 @@ class MenuTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("reached");
         Assertions.assertTrue(goodDecryption,"Codebreaker is defective");
     }
 }

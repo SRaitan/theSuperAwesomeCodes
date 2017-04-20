@@ -13,7 +13,7 @@ public class Menu {
     private static final String EXIT = "0";
     private static final String DECODE = "3";
     public IO myIO;
-    private MyDictionary dictionary = new MyDictionary();
+    private static MyDictionary dictionary = new MyDictionary();
 
     public Menu(IO myIO) {
         this.myIO = myIO;
@@ -29,13 +29,30 @@ public class Menu {
             String choice = myIO.input();
             switch (choice) {
                 case ADD_WORD:
-                    addWords();
+                    addWord();
                     break;
                 case VIEW_WORDS:
-                    viewDictionary();
+                    printDictionary();
                     break;
                 case DECODE:
-                    decode();
+                    try {
+                        boolean valid = false;
+                        File orgFile = null;
+                        while (!valid) {
+                            myIO.output("Enter the path of the file you want to decode, 0 to exit");
+                            String path = myIO.input();
+                            if (path.equals("0"))
+                                return;
+                            orgFile = new File(path);
+                            valid = orgFile.isFile() && orgFile.canRead();
+                        }
+                        //todo:
+                        startDecoding(orgFile, (decryptedBytes, key) ->
+                                myIO.output(decryptedBytes == null? "Could not crack code, they're too good for me!":
+                                        "Key: " + key + "\nOriginal Text:\n" + new String(decryptedBytes)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case EXIT:
                     return;
@@ -44,29 +61,7 @@ public class Menu {
             }
         }
     }
-
-    private void decode() {
-        try {
-            boolean valid = false;
-            File orgFile = null;
-            while (!valid) {
-                myIO.output("Enter the path of the file you want to decode, 0 to exit");
-                String path = myIO.input();
-                if (path.equals("0"))
-                    return;
-                orgFile = new File(path);
-                valid = orgFile.isFile() && orgFile.canRead();
-            }
-            //todo:
-            callDecoder(orgFile, (decryptedBytes, key) ->
-                    myIO.output(decryptedBytes == null? "Could not crack code, they're too good for me!":
-                            "Key: " + key + "\nOriginal Text:\n" + new String(decryptedBytes)));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void callDecoder(File orgFile, CodeBreaker.CodeBreakerListener listener) throws IOException {
+    private void startDecoding(File orgFile, CodeBreaker.CodeBreakerListener listener) throws IOException {
         byte[] fileBytes = fileToByteArray(orgFile);
         CodeBreaker FirstHalfOfCharBreaker =
                 new CodeBreaker(fileBytes, 0, Byte.MAX_VALUE / 2, listener);
@@ -99,7 +94,7 @@ public class Menu {
         return fileBytes;
     }
 
-    private void addWords() {
+    private void addWord() {
         myIO.output("Enter the word you want to add");
         boolean success = dictionary.addWordToDictionary(myIO.input());
         myIO.output(success ? "Added successfully" : "Your word already exists in the dictionary");
@@ -116,7 +111,7 @@ public class Menu {
         }
     }
 
-    private void viewDictionary() {
+    private void printDictionary() {
         myIO.output("List of words:");
         Set<String> tempDico = dictionary.getAllWords();
         for (String word : tempDico)

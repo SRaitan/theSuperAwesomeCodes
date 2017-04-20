@@ -70,7 +70,7 @@ public class CodeBreaker extends Thread {
         for (byte[] word : encodedCommonWords) {
             while ((wordIndex = fileAsString.indexOf(new String(word), wordIndex + 1))!= -1) {
                 reachedEndOfFile = (wordIndex + word.length == fileAsString.length());
-                int charAfterWord = !reachedEndOfFile ? fileAsString.charAt(wordIndex + word.length) : -1;
+                int charAfterWord = !reachedEndOfFile ? fileAsString.charAt(wordIndex + word.length) : 0;
                 //excluding beginning and end of file, checks words
                 if (wordIndex - 1 == -1 || isCommaBlankOrSpace(fileAsString.charAt(wordIndex - 1),key))
                     if (reachedEndOfFile || isCommaBlankOrSpace(charAfterWord, key))

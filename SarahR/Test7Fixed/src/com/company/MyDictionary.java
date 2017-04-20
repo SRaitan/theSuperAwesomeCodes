@@ -50,11 +50,12 @@ public class MyDictionary {
     }
 
     boolean addWordToDictionary(String word) {
-        return !commonWords.contains(word) && commonWords.add(word);
+        return !commonWords.contains(word) && words.add(word);
     }
 
     boolean addAllWordsToDictionary(String[] words){
         return Collections.addAll(commonWords, words);
     }
+
 
 }
