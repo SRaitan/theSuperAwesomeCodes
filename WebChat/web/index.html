@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>מצופה יש רק בשקם</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+    function buttonSend() {
+        var messageText=$("#textSend").val();
+        //alert(messageText);
+        $.get("/Servlet?action=send&msg="+messageText, function (data, status) {
+            if (status == "success") {
+                if (data.length > 0) {
+                    $("#divResult").html(data);
+                }
+                //setTimeout(function(){buttonRead()}, 3000);
+                //alert("buttonRead");
+            }
+        });
+
+        //var res =$(textSend).val();
+        // $("#divResult").html(res);
+    }
+    function buttonRead() {
+        $.get("/Servlet?action=read", function (data, status) {
+            if (status == "success") {
+                if (data.length > 0) {
+                    $("#divResult").html(data);
+                }
+            }
+        });
+    }
+
+    </script>
+</head>
+<body>
+<input type="text" id="textSend">
+<br/>
+<input type="button" value="buttonSend" onclick="buttonSend()">
+<input type="button" value="buttonRead" onclick="buttonRead()">
+<br/>
+<div id="divResult"></div>
+</body>
+</html>

@@ -1,10 +1,80 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <title>Calculator</title>
+</head>
+<body>
+    <h1>Welcome to my super awesome calculator</h1>
+    <input type="button" value="test" onclick="btnTest()">
+    <script src="‪jquery-3.2.1.min.js‬"></script>
+    <script>
+    function btnTest() {
+        $.get("/MainServlet?action=divide&operand1=5&operand2=1",function (data,status) {
+            if(status == "success"){
+                if(data.length > 0){
+                    $("#divResult").html(data);
+                }
+            }
+        });
+
+    }
+    </script>
+</body>
+</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Web Page</title>
+    <title>Calculator</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+        function btnAdd() {
+            var textValue1 = $("#textValue1").val();
+            var textValue2 = $("#textValue2").val();
+            //var res = textValue1 + textValue2;
+            var res =parseInt(textValue1)+ parseInt(textValue2);
+            $("#divResult").html(res);
+
+        }
+        function buttonSubtract() {
+            var textValue1 = $("#textValue1").val();
+            var textValue2 = $("#textValue2").val();
+            //var res = textValue1 + textValue2;
+            var res =parseInt(textValue1)- parseInt(textValue2);
+            $("#divResult").html(res);
+
+        }
+        function buttonMultiply() {
+            var textValue1 = $("#textValue1").val();
+            var textValue2 = $("#textValue2").val();
+            //var res = textValue1 + textValue2;
+            var res = parseInt(textValue1)* parseInt(textValue2);
+            $("#divResult").html(res);
+
+        }
+        function buttonDivide() {
+            var textValue1 = $("#textValue1").val();
+            var textValue2 = $("#textValue2").val();
+            //var res = textValue1 + textValue2;
+            var res = parseInt(textValue1) / parseInt(textValue2);
+            $("#divResult").html(res);
+
+        }
+
+    </script>
 </head>
 <body>
-<h1>Welcome to my super awesome website</h1>
+<h1>Welcome to the most awesome calculator ever</h1>
+<input type="text" id="textValue1">
+<input type="text" id="textValue2">
+<input type="button" value="buttonAdd" onclick="btnAdd()">
+<input type="button" value="buttonSubtract" onclick="buttonSubtract()">
+<input type="button" value="buttonMultiply" onclick="buttonMultiply()">
+<input type="button" value="buttonDivide" onclick="buttonDivide()">
+<h1>WE ARE THE CHAMPIONS</h1>
+<br/>
+<div id="divResult"></div>
 </body>
 </html>
