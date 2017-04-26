@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicTacToe</title>
+    <link href="index.css" rel="stylesheet">
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+        var isX = 0;
+        function XO() {
+            var imageLoc= 'showImageXO'+ $('#txtRow').val()+$('#txtCol').val();
+            alert(imageLoc);
+            isX++;
+            var bool = isX % 2;
+            if (bool==0) {
+                    $('#imageLoc').attr('src', '_images/o.jpg');
+            }
+            else if (bool==1){
+                $('#imageLoc').attr('src', '_images/x.jpg');
+
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div class="all_site">
+    <table class="table_game">
+        <tr>
+            <td> <img id="showImageXO11"  height="128px" onclick="XO(showImageXO11)"><!--src="_images/x.jpg"--></td>
+            <td> <img id="showImageXO12"  height="128px"><!--src="_images/x.jpg"--></td>
+            <td> <img id="showImageXO13"  height="128px"><!--src="_images/x.jpg"--></td>
+        </tr>
+        <tr>
+            <td> <img id="showImageXO21"  height="128px"><!--src="_images/x.jpg"--></td>
+            <td> <img id="showImageXO22"  height="128px"><!--src="_images/x.jpg"--></td>
+            <td> <img id="showImageXO23"  height="128px"><!--src="_images/x.jpg"--></td>
+        </tr>
+        <tr>
+            <td> <img id="showImageXO31"  height="128px"><!--src="_images/x.jpg"--></td>
+            <td> <img id="showImageXO32"  height="128px"><!--src="_images/x.jpg"--></td>
+            <td> <img id="showImageXO33"  height="128px"><!--src="_images/x.jpg"--></td>
+        </tr>
+    </table>
+    <div class="logo">
+        <img id="showImageXO"  height="128px"><!--src="_images/x.jpg"-->
+    </div>
+    <label id="lblCoordinates"> [Row,Col]: </label>
+    <input type="text" id="txtRow" class="input">
+    <input type="text" id="txtCol" class="input">
+<button id="XO" onclick="XO()">X/O</button>
+</div>
+
+</body>
+</html>
