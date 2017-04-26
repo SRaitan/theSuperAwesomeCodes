@@ -2,43 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>מצופה יש רק בשקם</title>
+    <title>NewChat</title>
+    <link href="index.css" rel="stylesheet">
     <script src="jquery-3.2.1.min.js"></script>
     <script>
-    function buttonSend() {
-        var messageText=$("#textSend").val();
-        //alert(messageText);
-        $.get("/Servlet?action=send&msg="+messageText, function (data, status) {
-            if (status == "success") {
-                if (data.length > 0) {
-                    $("#divResult").html(data);
-                }
-                //setTimeout(function(){buttonRead()}, 3000);
-                //alert("buttonRead");
-            }
-        });
+        var messages = [];
+        var counter = 0;
+        function init() {
+            getMessages();
+        }
+        function buttonSend() {
+            var messageText = $("#textSend").val();
+            if(messageText.length==0)
+                return;
+            $.get("/Servlet?action=send&msg=" + messageText, function (data, status) {
+                $("#divResult").html("Message sending "+ status);
 
-        //var res =$(textSend).val();
-        // $("#divResult").html(res);
-    }
-    function buttonRead() {
-        $.get("/Servlet?action=read", function (data, status) {
-            if (status == "success") {
-                if (data.length > 0) {
-                    $("#divResult").html(data);
-                }
-            }
-        });
-    }
+            });
+        }
+
+        function getMessages() {
+           $.get("/Servlet?action=read&counter="+messages.length, function (data, status) {
+                 if (status == "success") {
+                     if (data.length > 0) {
+                         updateMessageArray(decodeURI(data));
+                         renderMessages();
+                     }
+                 }
+               setTimeout(function(){getMessages()}, 2000);
+             });
+
+        }
+        function updateMessageArray(newData) {
+            var res = newData.split("&");
+            for(var i = counter; i < res.length; i++)
+                messages.push(res[i]);
+        }
+        function renderMessages() {
+            var str="";
+            for(var i = counter; i < messages.length; i++)
+                str+=messages[i]+"<br/>";
+            $("#divResult").html(str);
+        }
 
     </script>
 </head>
-<body>
-<input type="text" id="textSend">
-<br/>
-<input type="button" value="buttonSend" onclick="buttonSend()">
-<input type="button" value="buttonRead" onclick="buttonRead()">
-<br/>
-<div id="divResult"></div>
+<body onload="init()">
+<div class="all_site">
+    <h1>WELCOME TO OUR CHAT</h1>
+    <input type="text" id="textSend">
+    <br><br>
+    <input type="button" id="sender" value="Send" onclick="buttonSend()">
+    <span id="lblResult"></span>
+    <br><br>
+    <div class="divRes" id="divResult"></div>
+</div>
 </body>
 </html>

@@ -1,0 +1,23 @@
+.all_site{
+    background-color:darkturquoise;
+    text-align:center;
+}
+body{
+    background-color:silver;
+    font-family:verdana;
+    margin:0;
+}
+.divSignIn{
+    background-color:blue;
+    border:2px solid black;
+}
+.lblResult{
+    background-color:white;
+    border:2px solid black;
+    text-align:left;
+    padding: 2% 2% 2% 2% ;
+}
+.SButton{
+    background-color:white;
+    width: 100px;
+}

@@ -1,0 +1,15 @@
+.all_site{
+    background-color:darkturquoise;
+    text-align:center;
+}
+body{
+    background-color:silver;
+    font-family:verdana;
+    margin:0;
+}
+.divRes{
+    background-color:white;
+    border:2px solid black;
+    text-align:left;
+    padding: 2% 2% 2% 2% ;
+}

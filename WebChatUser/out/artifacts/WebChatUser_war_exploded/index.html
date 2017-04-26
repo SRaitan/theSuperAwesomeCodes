@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link href="index.css" rel="stylesheet">
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+        var messages = [];
+        var signedInUser="";
+        function renderMessages() {
+            var str = "";
+            for(var i=0;i<messages.length;i++){
+                str += messages[i] + "<br/>";
+            }
+            $("#divMessages").html(str);
+        }
+        function getMessages() {
+            $.get("/MainServlet?action=check&from="+messages.length, function (data, status) {
+                if(status == "success"){
+                    if(data.length > 0){
+                        var newMessages = data.split("&");
+                        for(var i=0;i<newMessages.length;i++)
+                            messages.push(newMessages[i]);
+                        renderMessages();
+                    }
+                }
+            });
+            setTimeout(function () {
+                getMessages();
+            }, 200);
+        }
+        function init() {
+            $("#divChat").hide();
+            getMessages();
+        }
+        function SignUp() {
+            var un = $("#txtUserName").val();
+            var pw = $("#txtPassword").val();
+            if(un.length == 0 || pw.length == 0)
+                return;
+            $.get("/MainServlet?action=signUp&username=" + un+"&password="+pw, function (data, status) {
+                //TODO: enable the button
+                if(status=="success"){
+                    if(data == "connect"){
+                        $("#divChat").show();
+                        $("#divSignIn").hide();
+                        signedInUser = un;
+                    }else{
+                        $("#lblError").text("User already exists, please choose a different username");
+                    }
+                }else{
+                    $("#lblError").val("Error signing up");
+                }
+            });
+        }
+        function SignIn() {
+            var un = $("#txtUserName").val();
+            var pw = $("#txtPassword").val();
+            if(un.length == 0 || pw.length == 0)
+                return;
+            $.get("/MainServlet?action=signIn&username=" + un+"&password="+pw, function (data, status) {
+                //TODO: enable the button
+                if(status=="success"){
+                    if(data == "connect") {
+                        $("#divChat").show();
+                        $("#divSignIn").hide();
+                        signedInUser = un;
+                    }
+                    else if(data == "notExistsUser")
+                       $("#lblError").text("User does not exist, please sign up");
+                    else if(data == "pwFail")
+                       $("#lblError").text("Wrong password, please retry");
+                }else{
+                    $("#lblError").text("error");
+                }
+            });
+        }
+        function btnSend() {
+            var msg = signedInUser+ ":" +$("#txtMessage").val();
+            //TODO: disable the button
+            if(msg.length == 0)
+                return;
+            $.get("/MainServlet?action=send&message=" + msg, function (data, status) {
+                //TODO: enable the button
+                if(status == "success"){
+                    if(data == "ok"){
+                        $("#txtMessage").val("");
+                        //$("#lblResult").text("send");
+                    }else{
+                        $("#lblResult").text("error");
+                    }
+                }else{
+                    $("#lblResult").text("error");
+                }
+            });
+        }
+        function btnSignout() {
+            $.get("/MainServlet?action=signout", function (data, status) {
+                if(status=="success"){
+                    if(data == "out"){
+                        $("#divChat").hide();
+                        $("#divSignIn").show();
+                        $("#txtUserName").val("");
+                        $("#txtPassword").val("");
+                        $("#txtMessage").val("");
+                    }else{
+                        $("#lblError").text("Error signing out, please retry");
+                    }
+                }else{
+                    $("#lblError").text("error");
+                }
+            });
+        }
+    </script>
+</head>
+<body onload="init()" >
+<div class="all_site">
+    <div id="divSignIn">
+        <h1 class="title">Sign in or Sign Up to begin using this awesome chat</h1>
+        <label id="lblUserName">Enter User Name:</label>
+        <input type="text" id="txtUserName">
+        <br/>
+        <label id="lblPassword">Enter Password:</label>
+        <input type="text" id="txtPassword">
+        <br/>
+        <button id="btnSignUp" onclick="SignUp()" class="SButton">SignUp</button>
+        <button id="btnSignIn" onclick="SignIn()" class="SButton">SignIn</button>
+        <br/>
+        <label id="lblError"></label><br/>
+    </div>
+    <div id="divChat">
+        <h1>Welcome to our awesome chat</h1>
+        <div id="divMessages"></div>
+        <input type="text" id="txtMessage" >
+        <button id="btnSend" onclick="btnSend()">Send</button><br/>
+        <button id="btnSignOut" onclick="btnSignout()">Sign Out</button><br/>
+        <span id="lblResult"></span>
+    </div>
+</div>
+</body>
+</html>
