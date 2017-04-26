@@ -8,12 +8,14 @@
     <script>
         var messages = [];
         var signedInUser="";
+        var signedInUserPw="";
+
         function renderMessages() {
             var str = "";
             for(var i=0;i<messages.length;i++){
                 str += messages[i] + "<br/>";
             }
-            $("#divMessages").html(str);
+            $("#divMessages").html(decodeURI(str));
         }
         function getMessages() {
             $.get("/MainServlet?action=check&from="+messages.length, function (data, status) {
@@ -32,7 +34,6 @@
         }
         function init() {
             $("#divChat").hide();
-            getMessages();
         }
         function SignUp() {
             var un = $("#txtUserName").val();
@@ -46,6 +47,7 @@
                         $("#divChat").show();
                         $("#divSignIn").hide();
                         signedInUser = un;
+                        getMessages();
                     }else{
                         $("#lblError").text("User already exists, please choose a different username");
                     }
@@ -66,6 +68,7 @@
                         $("#divChat").show();
                         $("#divSignIn").hide();
                         signedInUser = un;
+                        getMessages();
                     }
                     else if(data == "notExistsUser")
                        $("#lblError").text("User does not exist, please sign up");
@@ -118,12 +121,12 @@
 <body onload="init()" >
 <div class="all_site">
     <div id="divSignIn">
-        <h1 class="title">Sign in or Sign Up to begin using this awesome chat</h1>
+        <h3 class="title">Sign in or Sign Up to begin using this awesome chat</h3>
         <label id="lblUserName">Enter User Name:</label>
-        <input type="text" id="txtUserName">
+        <input type="text" id="txtUserName" class="sIn">
         <br/>
         <label id="lblPassword">Enter Password:</label>
-        <input type="text" id="txtPassword">
+        <input type="text" id="txtPassword" class="sIn">
         <br/>
         <button id="btnSignUp" onclick="SignUp()" class="SButton">SignUp</button>
         <button id="btnSignIn" onclick="SignIn()" class="SButton">SignIn</button>
@@ -132,7 +135,7 @@
     </div>
     <div id="divChat">
         <h1>Welcome to our awesome chat</h1>
-        <div id="divMessages"></div>
+        <div id="divMessages" class="chat"></div>
         <input type="text" id="txtMessage" >
         <button id="btnSend" onclick="btnSend()">Send</button><br/>
         <button id="btnSignOut" onclick="btnSignout()">Sign Out</button><br/>
