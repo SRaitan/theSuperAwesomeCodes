@@ -30,7 +30,7 @@ public class MainServlet extends javax.servlet.http.HttpServlet {
                 continue;
             qs.put(keyValue[0], keyValue[1]);
         }
-        
+
         String action = qs.get("action");
         if(action == null)
             return;
