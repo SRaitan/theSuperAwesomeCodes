@@ -1,0 +1,12 @@
+body{
+	background-color:silver;
+	font-family:verdana;
+	margin:0;
+}
+
+.all_site{
+	background-color:white;
+	width:900px;
+	margin:0 auto;
+	overflow:hidden;
+}

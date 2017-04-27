@@ -1,0 +1,11 @@
+body{
+	background-color: silver;
+	font-family:verdana
+	margin:0;
+}
+.allsite{
+	background-color: silver;
+	width:900px;
+	margin:0 auto;
+	overflow:hidden;
+}

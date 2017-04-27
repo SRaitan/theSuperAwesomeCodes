@@ -1,0 +1,63 @@
+body{
+	background-color: silver;
+	font-family:verdana
+	margin:0;
+}
+*{box-sizing:border-box;}
+.all_site{
+	background-color: white;
+	width:900px;
+	margin:0 auto;
+	overflow:hidden;
+	text-align:center;
+	position:relative;
+}
+
+.header{
+	width:100%;
+	height:50px;
+	border:2px solid black;
+	margin-bottom:10px;
+	line-height:46px;
+}
+.nav{
+	width:100%;
+	height:50px;
+	border:2px solid black;
+	margin-bottom:10px;
+	text-align:center;
+	line-height:46px;
+}
+.content{
+	width:69%;
+	height:200px;
+	border:2px solid black;
+	margin-bottom:10px;
+	float:left;
+	text-align:center;
+	margin-right:1%;
+	line-height:46px;
+}
+.sidebar{
+	width:29%;
+	height:200px;
+	border:2px solid black;
+	margin-bottom:10px;
+	float:right;
+	text-align:center;
+	line-height:46px;
+}
+.logo{
+	position:absolute;
+    top: 20px;
+    right: 43px;
+}
+.footer{
+	width:100%;
+	height:50px;
+	border:2px solid black;
+	margin-bottom:10px;
+	float:left;
+	text-align:center;
+	line-height:46px;
+}

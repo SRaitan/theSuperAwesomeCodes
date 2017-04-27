@@ -1,0 +1,75 @@
+<!-- form.html -->
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Passover !</title>
+	<style>
+		body{
+			background-color:#8000ff;
+		}
+		
+		.all_site{
+			width:900px;
+			background-color:white;
+			padding:8px;
+			margin:0 auto;
+		}
+		
+		.title{
+			color:blue;
+		}
+	</style>
+</head>
+<body>
+	<div class="all_site">
+		<h1 class="title">Passover items order form</h1>
+		<form action="thanku.html" method="get">
+			<label>Name:</label>
+			<input type="text" name="txt_name">
+			<br>
+			<label>Phone:</label>
+			<input type="text" name="txt_phone">
+			<br>
+			<label>Select item:</label>
+			<select name="select_item">
+				<option value="Matza">Matza square</option>
+				<option value="egg">Oval egg</option>
+				<option value="agada">Passover Agada</option>
+			</select>
+			<br>
+			<input type="checkbox" value="ok" name="check">
+			<label>I confirm my order</label>
+			<br>
+			<label>chooser your city:</label>
+			<br>
+			<input type="radio" value="תל אביב" name="city" >
+			<label>Tel aviv</label>
+			<br>
+			<input type="radio" value="חיפה" name="city">
+			<label>Haifa</label>
+			<br>
+			<input type="radio" value="ירושלים" name="city">
+			<label>Jerusalem</label>
+			
+			<br>
+			<br>
+			<button type="submit">Order</button>
+			
+		</form>
+	
+	
+	
+	
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
