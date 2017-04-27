@@ -1,16 +1,12 @@
 package com.company;
-
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * Created by eladlavi on 26/04/2017.
- */
 public class MainServlet extends javax.servlet.http.HttpServlet {
 
-    Map<String, String> users;
+    Map<String, User> users;
 
     @Override
     public void init() throws ServletException {
@@ -34,6 +30,7 @@ public class MainServlet extends javax.servlet.http.HttpServlet {
                 continue;
             qs.put(keyValue[0], keyValue[1]);
         }
+        
         String action = qs.get("action");
         if(action == null)
             return;
@@ -54,7 +51,20 @@ public class MainServlet extends javax.servlet.http.HttpServlet {
 
                 break;
             case "choosePartner":
-
+                if(!validatedUser(username,password))
+                    return;
+                User choosingUser = users.get(username);
+                String opponentUser = qs.get("partner");
+                User opponent = users.get(opponentUser);
+                boolean choosingSuccess = false;
+                synchronized (users){
+                    if(choosingUser.getOpponent() == null && opponent.getOpponent() == null){
+                        choosingUser.setOpponent(opponent);
+                        opponent.setOpponent(choosingUser);
+                        choosingSuccess=true;
+                    }
+                }
+                response.getWriter().write(choosingSuccess? "ok" :"failure");
                 break;
             case "login":
                 response.getWriter().write(
@@ -64,17 +74,38 @@ public class MainServlet extends javax.servlet.http.HttpServlet {
                 boolean success = false;
                 synchronized (users){
                     if(!users.containsKey(username)){
-                        users.put(username, password);
+                        users.put(username, new User (username,password));
                         success = true;
                     }
                 }
                 response.getWriter().write(success ? "ok" : "failure");
                 break;
+            case "lobby":
+                if(!validatedUser(username,password))
+                    return;
+                StringBuilder stringBuilder = new StringBuilder();
+                Collection<User> allUsers = users.values();
+                User askingUser = users.get(username);
+                if(askingUser.getOpponent()!= null) {
+                    response.getWriter().write("chosen" + askingUser.getOpponent().getUsername());
+                    return;
+                }
+                for (User u : allUsers) {
+                    if(u.getUsername().equals(username))
+                        continue;
+                    if(u.getOpponent() != null)
+                        continue;
+                    stringBuilder.append(u.getUsername() + "&");
+                }
+                if(stringBuilder.length()>0)
+                    stringBuilder.deleteCharAt(stringBuilder.length()-1);
+                break;
+
         }
     }
 
     private boolean validatedUser(String username, String password){
-        String existingPassword = users.get(username);
+        String existingPassword = users.get(username).getPassword();
         return password.equals(existingPassword);
     }
 }
